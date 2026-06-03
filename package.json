@@ -1,0 +1,25 @@
+{
+  "name": "interviewiq-ai",
+  "version": "1.0.0",
+  "description": "AI-Powered Interview Preparation Platform",
+  "main": "server/server.js",
+  "scripts": {
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "build:client": "npm run build --prefix client",
+    "start:server": "npm run start --prefix server",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev": "npx concurrently \"npm run dev:server\" \"npm run dev:client\""
+  },
+  "keywords": [
+    "mern",
+    "ai",
+    "gemini",
+    "interview-prep"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

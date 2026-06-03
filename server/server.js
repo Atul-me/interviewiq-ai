@@ -16,6 +16,9 @@ const AppError = require('./utils/customError');
 const { sendSuccess } = require('./utils/apiResponse');
 const authRouter = require('./routes/authRoutes');
 const resumeRouter = require('./routes/resumeRoutes');
+const aiRouter = require('./routes/aiRoutes');
+const interviewRouter = require('./routes/interviewRoutes');
+const analyticsRouter = require('./routes/analyticsRoutes');
 
 // Initialize Express app
 const app = express();
@@ -80,8 +83,27 @@ app.use('/api/v1/auth', authRouter);
 // Resume Routes
 app.use('/api/v1/resumes', resumeRouter);
 
+// AI Routes
+app.use('/api/v1/ai', aiRouter);
+
+// Interview Routes
+app.use('/api/v1/interviews', interviewRouter);
+
+// Analytics Routes
+app.use('/api/v1/analytics', analyticsRouter);
+
 // Static File Serving for Uploaded Assets
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve compiled static client assets in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+  
+  // Forward all non-API paths to compiled React template
+  app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  });
+}
 
 // Fallback Route for Undefined API Paths
 app.use((req, res, next) => {
