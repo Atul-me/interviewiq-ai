@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    @apply bg-dark-950 text-slate-200 antialiased selection:bg-brand-500 selection:text-white;
+  }
+
+  /* Custom modern scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-950;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-800 rounded-full hover:bg-dark-700;
+  }
+}
+
+@layer components {
+  /* Premium Glassmorphism Card styling */
+  .glass-panel {
+    @apply bg-dark-900/60 backdrop-blur-md border border-slate-800/40 shadow-glass;
+  }
+
+  .glass-panel-light {
+    @apply bg-white/70 backdrop-blur-md border border-slate-200/50 shadow-glass-light;
+  }
+
+  /* Interactive button elements */
+  .btn-primary {
+    @apply bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-600 text-white font-medium px-5 py-2.5 rounded-xl transition-all duration-300 transform active:scale-95 shadow-md shadow-brand-600/10 hover:shadow-brand-500/25;
+  }
+
+  .btn-secondary {
+    @apply bg-dark-800/50 hover:bg-dark-800 text-slate-300 hover:text-white border border-slate-700/50 font-medium px-5 py-2.5 rounded-xl transition-all duration-300 transform active:scale-95;
+  }
+
+  /* Core animated glow effects */
+  .glow-border {
+    position: relative;
+    z-index: 1;
+  }
+
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, #6380ff, #3b52f6, #93abff);
+    background-size: 200% 200%;
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.15;
+    filter: blur(8px);
+    transition: opacity 0.3s ease;
+  }
+
+  .glow-border:hover::before {
+    opacity: 0.35;
+  }
+}
+
+/* Micro-animations and utility classes */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
