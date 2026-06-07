@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Implementation Plan - InterviewIQ AI</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #f8fafc;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --code-bg: #f1f5f9;
+      --card-bg: #ffffff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #3b82f6;
+        --primary-dark: #60a5fa;
+        --bg: #0f172a;
+        --text: #f8fafc;
+        --text-muted: #94a3b8;
+        --border: #334155;
+        --code-bg: #1e293b;
+        --card-bg: #1e293b;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--bg);
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      border: 1px solid var(--border);
+    }
+
+    header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-top: 40px;
+      color: var(--primary);
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-top: 25px;
+      color: var(--text);
+      page-break-after: avoid;
+    }
+
+    p, li {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    pre {
+      background: var(--code-bg);
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    .phase-card {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+    }
+
+    .print-btn {
+      display: block;
+      width: 200px;
+      margin: 20px auto 40px auto;
+      padding: 12px 24px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.2s;
+    }
+
+    .print-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background-color: white;
+        color: black;
+        padding: 0;
+      }
+      .container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .print-btn {
+        display: none;
+      }
+      .phase-card {
+        page-break-inside: avoid;
+        border: 1px solid #ccc;
+        background: transparent;
+      }
+      pre {
+        background: #f5f5f5;
+        border: 1px solid #ccc;
+        page-break-inside: avoid;
+      }
+      h2, h3 {
+        page-break-after: avoid;
+      }
+      a {
+        text-decoration: none;
+        color: black;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+
+  <div class="container">
+    <header>
+      <h1>InterviewIQ AI</h1>
+      <p class="subtitle">Master Implementation Plan & Architecture Specification (Phases 1–10)</p>
+    </header>
+
+    <!-- Phase 1 -->
+    <div class="phase-card">
+      <h2>🌐 Phase 1: Foundation & Project Scaffold</h2>
+      <p>Establishes a robust, decoupled MERN infrastructure optimizing security configurations and logging systems.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>Security Middlewares</strong>: Enforces Express-level security with <code>helmet</code> security headers, <code>cors</code> validation controls, and <code>express-rate-limit</code> throttles.</li>
+        <li><strong>Database connection</strong>: Singleton database module tracking events (connected, disconnected, error) with automatic error recovery layers.</li>
+        <li><strong>Unified Winston logger</strong>: Decoupled logging formatting console output with custom levels (http, info, debug, warn, error) and pipe outputs to file logs.</li>
+      </ul>
+      <h3>Code Blueprint (db.js)</h3>
+      <pre>
+const mongoose = require('mongoose');
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (err) {
+    console.error(`Database connection failed: ${err.message}`);
+    process.exit(1);
+  }
+};</pre>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase-card">
+      <h2>🔐 Phase 2: Authentication Pipeline</h2>
+      <p>Implements JWT-based user authentication using secure salting algorithms and Joi input validation schema guards.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>User Model</strong>: Mongoose pre-save hook automatically hashes passwords using <code>bcryptjs</code> with a work factor of 12.</li>
+        <li><strong>Route Guards</strong>: Express protection middleware verifying Bearer tokens, decoding JWT signatures, and resolving database credentials.</li>
+        <li><strong>Validation Middleware</strong>: Validates incoming request parameters against strict Joi schemas, blocking parameter pollution.</li>
+      </ul>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase-card">
+      <h2>🎨 Phase 3: Frontend Scaffold & Core UI</h2>
+      <p>Sets up a responsive, dark-mode React application powered by Vite, Tailwind CSS, global Context APIs, and Axios interceptors.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>Axios Client</strong>: Injects authentication tokens into headers automatically and intercepts expired session responses.</li>
+        <li><strong>Auth & Toast Contexts</strong>: Handles state propagation for logged-in user profiles and coordinates dynamic popup alerts.</li>
+        <li><strong>Route Protection guards</strong>: Enforces Protected and Public route constraints redirecting users based on login state.</li>
+      </ul>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase-card">
+      <h2>📄 Phase 4: Resume Parsing Pipeline</h2>
+      <p>Establishes Multer file upload pipelines, file format checks, and asynchronous PDF plain-text parser controllers.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>Storage Configuration</strong>: Restricts upload parameters to 5MB PDF-only files under <code>uploads/resumes/</code>.</li>
+        <li><strong>pdf-parse Integration</strong>: Invokes class-based parsing constructors to pull raw text streams from file buffer arrays.</li>
+        <li><strong>User Profile Update</strong>: Persists parsed resume text directly on the MongoDB user document for subsequent context tailoring.</li>
+      </ul>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase-card">
+      <h2>🤖 Phase 5: Gemini AI Engine Integration</h2>
+      <p>Enforces structured JSON response schemas directly from Google Gemini API endpoints without regex cleaning steps.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>Structured Output</strong>: Configures <code>generationConfig</code> parameters with <code>responseMimeType: "application/json"</code> and schema definitions.</li>
+        <li><strong>Model Choice</strong>: Utilizes <code>gemini-1.5-flash</code> for fast, cost-efficient, and structured text generation.</li>
+        <li><strong>Modular Prompt Engine</strong>: Builds dynamic interview tailoring systems that inject target roles, difficulty settings, and resume details.</li>
+      </ul>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="phase-card">
+      <h2>📅 Phase 6: Mock Interview Session Management</h2>
+      <p>Controls the full session lifecycle including starting sessions, answer inputs, real-time evaluations, and final scoring scorecard aggregation.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>Interview Collection Model</strong>: Persists the active interview state, nested question parameters, and scoring metrics.</li>
+        <li><strong>Progressive Evaluation</strong>: Evaluates candidate answers sequentially as they are submitted, storing individual evaluations.</li>
+        <li><strong>Aggregation Controller</strong>: Averages active session scores, appends overall feedback summaries, and seals document states on completion.</li>
+      </ul>
+    </div>
+
+    <!-- Phase 7 -->
+    <div class="phase-card">
+      <h2>📊 Phase 7: Analytics Dashboard</h2>
+      <p>Builds fast MongoDB aggregation pipelines evaluating candidate progress and category proficiencies.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>Aggregation Framework</strong>: Groups data dynamically inside MongoDB to optimize network overhead.</li>
+        <li><strong>Proficiency Analysis</strong>: Evaluates question averages grouped by category to diagnose candidate strengths and weaknesses.</li>
+        <li><strong>Timeline Progress</strong>: Sorts completed session logs chronologically for rendering progress charts.</li>
+      </ul>
+    </div>
+
+    <!-- Phase 8 -->
+    <div class="phase-card">
+      <h2>🎙️ Phase 8: Advanced Features (Voice & Caching)</h2>
+      <p>Implements audio answer recordings, speech-to-text translations via Gemini multimodal APIs, and response cache systems.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>Multimodal Transcription</strong>: Uploads audio recordings, converts binaries to inline base64 data, and requests Gemini transcriptions.</li>
+        <li><strong>Volatile Caching layer</strong>: Exposes a caching service with TTL support that falls back gracefully to local memory maps when Redis is absent.</li>
+        <li><strong>Cache Invalidation</strong>: Triggers automatic cache flushes whenever starting, grading, or completing interview sessions.</li>
+      </ul>
+    </div>
+
+    <!-- Phase 9 -->
+    <div class="phase-card">
+      <h2>🛠️ Phase 9: Production Readiness & Optimization</h2>
+      <p>Configures mono-repo start setups and production static files serving fallbacks directly inside Express routes.</p>
+      <h3>Core Architecture</h3>
+      <ul>
+        <li><strong>Orchestrated Tasks</strong>: Utilizes concurrently packages to run prefix build commands for both backend and frontend.</li>
+        <li><strong>SPA Routing fallback</strong>: Serves pre-built client resources in production and maps non-API route requests to React's index template.</li>
+      </ul>
+    </div>
+
+    <!-- Phase 10 -->
+    <div class="phase-card">
+      <h2>📄 Phase 10: Documentation & Handover</h2>
+      <p>Presents a comprehensive platform specifications and setup handbook to final developers.</p>
+      <h3>Core Deliverables</h3>
+      <ul>
+        <li><strong>README.md Setup Guide</strong>: Describes folder structures, configurations variables, and local commands.</li>
+        <li><strong>API Specification Sheets</strong>: Documents endpoint headers, payload formats, and expected JSON structures.</li>
+      </ul>
+    </div>
+
+  </div>
+
+</body>
+</html>

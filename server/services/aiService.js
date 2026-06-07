@@ -22,14 +22,16 @@ try {
   logger.error('Failed to initialize Gemini AI SDK:', error);
 }
 
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+
 /**
  * Call Gemini model to generate structured JSON content
  * @param {string} prompt - Input text prompt
  * @param {Object} schema - JSON schema to enforce on the output
- * @param {string} [modelName='gemini-1.5-flash'] - Gemini model variant
+ * @param {string} [modelName] - Gemini model variant (reads GEMINI_MODEL env var)
  * @returns {Promise<Object>} Evaluated JSON object response
  */
-const generateStructuredJSON = async (prompt, schema, modelName = 'gemini-1.5-flash') => {
+const generateStructuredJSON = async (prompt, schema, modelName = DEFAULT_MODEL) => {
   if (!genAI) {
     throw new AppError('AI Service is currently unconfigured. Please supply a valid GEMINI_API_KEY in the environment.', 503);
   }
@@ -111,7 +113,7 @@ const transcribeAudio = async (filePath, mimeType) => {
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: DEFAULT_MODEL });
 
     // Read local file and format to inline base64 data for generative model
     const audioData = {
